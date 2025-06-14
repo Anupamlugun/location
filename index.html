@@ -253,13 +253,19 @@
             if (error && typeof error.code !== "undefined") {
               switch (error.code) {
                 case 1: // PERMISSION_DENIED
-                  message = "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।";
+                  message =
+                    "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।" +
+                    error.code;
                   break;
                 case 2: // POSITION_UNAVAILABLE
-                  message = "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।";
+                  message =
+                    "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।" +
+                    error.code;
                   break;
                 case 3: // TIMEOUT
-                  message = "❌ लोकेशन प्राप्त करने में समय समाप्त हो गया।";
+                  message =
+                    "❌ लोकेशन प्राप्त करने में समय समाप्त हो गया।" +
+                    error.code;
                   break;
               }
             }
@@ -268,7 +274,7 @@
           },
           {
             enableHighAccuracy: true,
-            timeout: 15000,
+            timeout: 95000,
             maximumAge: 0,
           }
         );
