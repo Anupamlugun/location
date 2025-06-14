@@ -248,22 +248,23 @@
             status.style.color = "red";
             guideImage.style.display = "block";
 
-            switch (error.code) {
-              case error.PERMISSION_DENIED:
-                status.textContent =
-                  "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।";
-                break;
-              case error.POSITION_UNAVAILABLE:
-                status.textContent =
-                  "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।";
-                break;
-              case error.TIMEOUT:
-                status.textContent = "❌ लोकेशन प्राप्त करने में समय समाप्त।";
-                break;
-              default:
-                status.textContent =
-                  "❌ अज्ञात त्रुटि। कृपया पुनः प्रयास करें।";
+            let message = "❌ अज्ञात त्रुटि हुई। कृपया पुनः प्रयास करें।";
+
+            if (error && typeof error.code !== "undefined") {
+              switch (error.code) {
+                case 1: // PERMISSION_DENIED
+                  message = "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।";
+                  break;
+                case 2: // POSITION_UNAVAILABLE
+                  message = "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।";
+                  break;
+                case 3: // TIMEOUT
+                  message = "❌ लोकेशन प्राप्त करने में समय समाप्त हो गया।";
+                  break;
+              }
             }
+
+            status.textContent = message;
           },
           {
             enableHighAccuracy: true,
